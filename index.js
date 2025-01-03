@@ -14,38 +14,39 @@ function createGrid(squaresPerSide) {
         square.style.width = `${squareSize}px`;
         square.style.height = `${squareSize}px`;
 
-        // Track the darkening level for each square
-        let darkeningLevel = 0;
-
-        // Add hover effect to change color and darken progressively
+        // Add hover effect to change color
         square.addEventListener('mouseover', () => {
-            if (darkeningLevel === 0) {
-                // Randomize initial color
-                const red = Math.floor(Math.random() * 256);
-                const green = Math.floor(Math.random() * 256);
-                const blue = Math.floor(Math.random() * 256);
-                square.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
-            }
-
-            // Increase darkening level by 10% on each interaction
-            darkeningLevel += 1;
-            const currentColor = square.style.backgroundColor;
-            square.style.backgroundColor = darkenColor(currentColor, darkeningLevel);
+            square.style.backgroundColor = '#333';
         });
 
         container.appendChild(square);
     }
 }
 
-// Function to progressively darken a color
-function darkenColor(rgb, level) {
-    // Extract RGB values
-    const [r, g, b] = rgb.match(/\d+/g).map(Number);
+// Reset button functionality
+resetButton.addEventListener('click', () => {
+    const squares = document.querySelectorAll('.grid-square');
+    squares.forEach(square => {
+        square.style.backgroundColor = 'white';
+    });
+});
 
-    // Calculate the darkened color by reducing brightness by 10% each time
-    const darkenFactor = 1 - level * 0.1;
-    const newR = Math.floor(r * darkenFactor);
-    const newG = Math.floor(g * darkenFactor);
-    const newB = Math.floor(b * darkenFactor);
+// New grid button functionality
+newGridButton.addEventListener('click', () => {
+    let squaresPerSide = parseInt(prompt('Enter the number of squares per side (max 100):'), 10);
 
-    r
+    if (squaresPerSide > 100) {
+        alert('Please enter a number less than or equal to 100.');
+        return;
+    }
+
+    if (!squaresPerSide || squaresPerSide <= 0) {
+        alert('Please enter a valid number.');
+        return;
+    }
+
+    createGrid(squaresPerSide);
+});
+
+// Initial grid
+createGrid(16);
